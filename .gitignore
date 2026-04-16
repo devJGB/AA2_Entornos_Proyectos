@@ -1,0 +1,37 @@
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+*.sqlite
+*.sqlite3
+
+.env
+.env.*
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
