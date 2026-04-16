@@ -66,3 +66,63 @@ app.delete('/project/:id', async (req, res) => {
     await db('projects').del().where({id: req.params.id});
     res.status(204).json({});
 });
+
+/// CRUD TAREAS ///
+
+// Obtener todas las tareas
+app.get('/task', async (req, res) => {
+    const tasks = await db('tasks').select('*');
+    res.json(tasks);
+});
+
+// Obtener una tarea por id
+app.get('/task/:id', async (req, res) => {
+    const task = await db('task')
+        .select('*')
+        .where({id: req.params.id})
+        .first();
+
+        if(!task) {
+            return res.status(404).json({message: 'Tarea no encontrada'});
+        }
+        res.json(task);
+});
+
+// Crear una tarea
+app.post('/task', async (req, res) => {
+    const { project_id, title, is_done} = req.body;
+
+    await db('tasks').insert({
+        project_id,
+        title,
+        is_done: is_done ?? 0,
+    });
+
+    res.status(201).json({message: 'Tarea creada'});
+});
+
+// Actualizar una tarea
+app.put('/tasks/:id', async (req, res) => {
+    const {project_id, title, is_done} = req.body;
+
+    await db('task')
+        .update({project_id, title, is_done})
+        .where({id: req.params.id});
+
+        res.status(204).json({});
+});
+
+// Eliminar tarea
+app.delete('/tasks/id', async (req, res) => {
+    await db('task').del().where({id: req.params.id});
+    res.status(204).json({});
+});
+
+// Obtener tareas por poyectos
+app.get('/projects/:id/task', async (req, res) => {
+    const tasks = await db('tasks')
+        .select('*')
+        .where({project_id: req.params.id});
+
+        res.json(tasks);
+});
