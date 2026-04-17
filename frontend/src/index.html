@@ -4,9 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyectos</title>
-    <script src="./app.js" type="module"></script>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <h1>Proyectos</h1>
+
+    <!--Formulario para crear/editar-->
+    <form id="project-form">
+        <input type="hidden" id="project-id" />
+        <input type="text" id="project-name" placeholder="Nombre" required />
+        <input type="text" id="project-description" placeholder="Descripción" />
+        <button type="submit">Guardar</button>
+        <button type="button" id="cancel-edit">Cancelar</button>
+    </form>
+
+    <!-- Contenedor listado-->
+     <div id="projects"></div>
+
+    <script src="./app.js" type="module"></script>
 </body>
 </html>

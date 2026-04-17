@@ -2,17 +2,19 @@
   "name": "aa2_proyectos",
   "version": "1.0.0",
   "description": "trabajo_entornos_2evaluacion",
-  
   "scripts": {
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.ja"
   },
   "author": "Joanna_Suarez_Pastor",
   "license": "ISC",
-  
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "knex": "^3.2.9",
     "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
