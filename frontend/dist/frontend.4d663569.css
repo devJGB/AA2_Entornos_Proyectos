@@ -1,0 +1,96 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #222;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 16px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  margin-bottom: 12px;
+}
+
+#projects {
+  margin-top: 16px;
+}
+
+#project-form {
+  background: #fff;
+  border-radius: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  display: flex;
+  box-shadow: 0 2px 6px #00000014;
+}
+
+#project-form input {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  flex: 200px;
+  padding: 8px;
+}
+
+#project-form button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.btn-edit {
+  color: #fff;
+  background: #4a90e2;
+}
+
+.btn-delete {
+  color: #fff;
+  background: #e74c3c;
+}
+
+#cancel-edit {
+  color: #fff;
+  background: #777;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  background: #fff;
+  border-radius: 6px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  display: grid;
+}
+
+li strong {
+  margin-right: 6px;
+  display: inline-block;
+}
+
+li .btn-group {
+  flex-wrap: wrap;
+  gap: 6px;
+  display: flex;
+}
+
+@media (width <= 600px) {
+  #project-form {
+    flex-direction: column;
+  }
+
+  li {
+    grid-template-columns: 1fr;
+  }
+}
+/*# sourceMappingURL=frontend.4d663569.css.map */
