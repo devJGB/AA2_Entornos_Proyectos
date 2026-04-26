@@ -146,6 +146,22 @@ li .btn-group {
   background: #777;
   color: #fff;
 }
+
+/* Mensajes de error */
+.form-errors {
+  margin: 8px 0 16px;
+  padding: 10px 12px;
+  background: #ffecec;
+  border: 1px solid #f5c2c2;
+  color: #b91c1c;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.form-errors ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   #project-form ,

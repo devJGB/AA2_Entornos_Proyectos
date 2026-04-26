@@ -732,6 +732,27 @@ const taskDescriptionInput = document.getElementById("task-description");
 const taskDoneInput = document.getElementById("task-done");
 const taskCancelBtn = document.getElementById("cancel-task-edit");
 const tasksTitle = document.getElementById("tasks-title");
+const taskErrors = document.getElementById("task-errors");
+// Mostrar errores en pantalla
+function showTaskErrors(errors) {
+    if (!errors || errors.length === 0) {
+        taskErrors.innerHTML = "";
+        return;
+    }
+    taskErrors.innerHTML = `
+    <ul>
+      ${errors.map((e)=>`<li>${e}</li>`).join("")}
+    </ul>
+  `;
+}
+// Validar formulario de tareas
+function validateTaskForm() {
+    const errors = [];
+    const title = taskTitleInput.value.trim();
+    if (!projectId) errors.push("Falta el ID del proyecto.");
+    if (!title) errors.push("El t\xedtulo de la tarea es obligatorio.");
+    return errors;
+}
 // Si no hay project_id
 if (!projectId) {
     tasksTitle.textContent = "Proyecto no especificado";
@@ -753,7 +774,7 @@ async function loadTasks() {
       ${tasks.map((t)=>`
             <li>
               <div>
-                <strong>${t.title}</strong> 
+                <strong>${t.title}</strong>
                 - ${t.description ?? ""}
                 - ${t.is_done ? "\u2705 Hecha" : "\u274C Pendiente"}
               </div>
@@ -769,12 +790,17 @@ async function loadTasks() {
 // Crear o editar tarea
 taskForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
-    if (!projectId) return;
+    const errors = validateTaskForm();
+    if (errors.length > 0) {
+        showTaskErrors(errors);
+        return;
+    }
+    showTaskErrors([]);
     const id = taskIdInput.value;
     const payload = {
         project_id: Number(projectId),
-        title: taskTitleInput.value,
-        description: taskDescriptionInput.value,
+        title: taskTitleInput.value.trim(),
+        description: taskDescriptionInput.value.trim(),
         is_done: taskDoneInput.checked ? 1 : 0
     };
     if (id) await (0, _axiosDefault.default).put(`${API_URL}/tasks/${id}`, payload);
@@ -787,6 +813,7 @@ taskForm.addEventListener("submit", async (e)=>{
 taskCancelBtn.addEventListener("click", ()=>{
     taskForm.reset();
     taskIdInput.value = "";
+    showTaskErrors([]);
 });
 // Editar o eliminar tarea
 tasksDiv.addEventListener("click", async (e)=>{

@@ -13,10 +13,40 @@ const tasksDiv = document.getElementById("tasks");
 const taskForm = document.getElementById("task-form");
 const taskIdInput = document.getElementById("task-id");
 const taskTitleInput = document.getElementById("task-title");
-const taskDescriptionInput = document.getElementById("task-description"); 
+const taskDescriptionInput = document.getElementById("task-description");
 const taskDoneInput = document.getElementById("task-done");
 const taskCancelBtn = document.getElementById("cancel-task-edit");
 const tasksTitle = document.getElementById("tasks-title");
+const taskErrors = document.getElementById("task-errors");
+
+// Mostrar errores en pantalla
+function showTaskErrors(errors) {
+  if (!errors || errors.length === 0) {
+    taskErrors.innerHTML = "";
+    return;
+  }
+  taskErrors.innerHTML = `
+    <ul>
+      ${errors.map((e) => `<li>${e}</li>`).join("")}
+    </ul>
+  `;
+}
+
+// Validar formulario de tareas
+function validateTaskForm() {
+  const errors = [];
+  const title = taskTitleInput.value.trim();
+
+  if (!projectId) {
+    errors.push("Falta el ID del proyecto.");
+  }
+
+  if (!title) {
+    errors.push("El título de la tarea es obligatorio.");
+  }
+
+  return errors;
+}
 
 // Si no hay project_id
 if (!projectId) {
@@ -48,7 +78,7 @@ async function loadTasks() {
           (t) => `
             <li>
               <div>
-                <strong>${t.title}</strong> 
+                <strong>${t.title}</strong>
                 - ${t.description ?? ""}
                 - ${t.is_done ? "✅ Hecha" : "❌ Pendiente"}
               </div>
@@ -68,13 +98,18 @@ async function loadTasks() {
 taskForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  if (!projectId) return;
+  const errors = validateTaskForm();
+  if (errors.length > 0) {
+    showTaskErrors(errors);
+    return;
+  }
+  showTaskErrors([]);
 
   const id = taskIdInput.value;
   const payload = {
     project_id: Number(projectId),
-    title: taskTitleInput.value,
-    description: taskDescriptionInput.value, 
+    title: taskTitleInput.value.trim(),
+    description: taskDescriptionInput.value.trim(),
     is_done: taskDoneInput.checked ? 1 : 0,
   };
 
@@ -93,6 +128,7 @@ taskForm.addEventListener("submit", async (e) => {
 taskCancelBtn.addEventListener("click", () => {
   taskForm.reset();
   taskIdInput.value = "";
+  showTaskErrors([]);
 });
 
 // Editar o eliminar tarea
@@ -110,7 +146,7 @@ tasksDiv.addEventListener("click", async (e) => {
 
     taskIdInput.value = task.id;
     taskTitleInput.value = task.title;
-    taskDescriptionInput.value = task.description ?? ""; 
+    taskDescriptionInput.value = task.description ?? "";
     taskDoneInput.checked = task.is_done === 1;
   }
 });
