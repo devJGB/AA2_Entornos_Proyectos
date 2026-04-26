@@ -207,7 +207,7 @@
       });
     }
   }
-})({"7wZbQ":[function(require,module,exports,__globalThis) {
+})({"fR7TU":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
@@ -215,7 +215,7 @@ var HMR_SERVER_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "439701173a9199ea";
 var HMR_USE_SSE = false;
-module.bundle.HMR_BUNDLE_ID = "9440bf780f77c784";
+module.bundle.HMR_BUNDLE_ID = "27eb4cba8b625fbd";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_SERVER_PORT, HMR_ENV_HASH, HMR_SECURE, HMR_USE_SSE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -713,83 +713,100 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
     }
 }
 
-},{}],"2R06K":[function(require,module,exports,__globalThis) {
+},{}],"iAzNu":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
 // URL del backend
 const API_URL = "http://localhost:8080";
-// Elementos del DOM
-const projectsDiv = document.getElementById("projects");
-const form = document.getElementById("project-form");
-const idInput = document.getElementById("project-id");
-const nameInput = document.getElementById("project-name");
-const descInput = document.getElementById("project-description");
-const cancelBtn = document.getElementById("cancel-edit");
-// Cargar proyectos
-async function loadProjects() {
-    const res = await (0, _axiosDefault.default).get(`${API_URL}/projects`);
-    const projects = res.data;
-    if (projects.length === 0) {
-        projectsDiv.innerHTML = "<p>No hay proyectos en tu lista.</p>";
+// Leer project_id desde querystring
+const params = new URLSearchParams(window.location.search);
+const projectId = params.get("project_id");
+const projectName = params.get("name");
+// Elementos DOM
+const tasksDiv = document.getElementById("tasks");
+const taskForm = document.getElementById("task-form");
+const taskIdInput = document.getElementById("task-id");
+const taskTitleInput = document.getElementById("task-title");
+const taskDescriptionInput = document.getElementById("task-description");
+const taskDoneInput = document.getElementById("task-done");
+const taskCancelBtn = document.getElementById("cancel-task-edit");
+const tasksTitle = document.getElementById("tasks-title");
+// Si no hay project_id
+if (!projectId) {
+    tasksTitle.textContent = "Proyecto no especificado";
+    tasksDiv.innerHTML = "<p>Falta el ID del proyecto.</p>";
+}
+// Título dinámico
+if (projectName) tasksTitle.textContent = `Tareas de: ${projectName}`;
+// Cargar tareas por proyecto
+async function loadTasks() {
+    if (!projectId) return;
+    const res = await (0, _axiosDefault.default).get(`${API_URL}/projects/${projectId}/tasks`);
+    const tasks = res.data;
+    if (tasks.length === 0) {
+        tasksDiv.innerHTML = "<p>No hay tareas para este Proyecto</p>";
         return;
     }
-    projectsDiv.innerHTML = `
+    tasksDiv.innerHTML = `
     <ul>
-      ${projects.map((p)=>`
+      ${tasks.map((t)=>`
             <li>
               <div>
-                <strong>${p.name}</strong> - ${p.description ?? ""}
+                <strong>${t.title}</strong> 
+                - ${t.description ?? ""}
+                - ${t.is_done ? "\u2705 Hecha" : "\u274C Pendiente"}
               </div>
               <div class="btn-group">
-                <!-- Bot\xf3n para ir a tareas del proyecto -->
-                <a class="btn-view-tasks" href="./task.html?project_id=${p.id}&name=${encodeURIComponent(p.name)}">
-                  Tareas
-                </a>
-                <button data-id="${p.id}" class="btn-edit">Editar</button>
-                <button data-id="${p.id}" class="btn-delete">Eliminar</button>
+                <button data-id="${t.id}" class="btn-edit-task">Editar</button>
+                <button data-id="${t.id}" class="btn-delete-task">Eliminar</button>
               </div>
             </li>
           `).join("")}
     </ul>
   `;
 }
-// Crear o editar proyecto
-form.addEventListener("submit", async (e)=>{
+// Crear o editar tarea
+taskForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
-    const id = idInput.value;
+    if (!projectId) return;
+    const id = taskIdInput.value;
     const payload = {
-        name: nameInput.value,
-        description: descInput.value
+        project_id: Number(projectId),
+        title: taskTitleInput.value,
+        description: taskDescriptionInput.value,
+        is_done: taskDoneInput.checked ? 1 : 0
     };
-    if (id) await (0, _axiosDefault.default).put(`${API_URL}/projects/${id}`, payload);
-    else await (0, _axiosDefault.default).post(`${API_URL}/projects`, payload);
-    form.reset();
-    idInput.value = "";
-    loadProjects();
+    if (id) await (0, _axiosDefault.default).put(`${API_URL}/tasks/${id}`, payload);
+    else await (0, _axiosDefault.default).post(`${API_URL}/tasks`, payload);
+    taskForm.reset();
+    taskIdInput.value = "";
+    loadTasks();
 });
-// Cancelar edición
-cancelBtn.addEventListener("click", ()=>{
-    form.reset();
-    idInput.value = "";
+// Cancelar edición tarea
+taskCancelBtn.addEventListener("click", ()=>{
+    taskForm.reset();
+    taskIdInput.value = "";
 });
-// Editar o eliminar
-projectsDiv.addEventListener("click", async (e)=>{
+// Editar o eliminar tarea
+tasksDiv.addEventListener("click", async (e)=>{
     const id = e.target.dataset.id;
-    if (e.target.classList.contains("btn-delete")) {
-        await (0, _axiosDefault.default).delete(`${API_URL}/projects/${id}`);
-        loadProjects();
+    if (e.target.classList.contains("btn-delete-task")) {
+        await (0, _axiosDefault.default).delete(`${API_URL}/tasks/${id}`);
+        loadTasks();
     }
-    if (e.target.classList.contains("btn-edit")) {
-        const res = await (0, _axiosDefault.default).get(`${API_URL}/projects/${id}`);
-        const project = res.data;
-        idInput.value = project.id;
-        nameInput.value = project.name;
-        descInput.value = project.description ?? "";
+    if (e.target.classList.contains("btn-edit-task")) {
+        const res = await (0, _axiosDefault.default).get(`${API_URL}/tasks/${id}`);
+        const task = res.data;
+        taskIdInput.value = task.id;
+        taskTitleInput.value = task.title;
+        taskDescriptionInput.value = task.description ?? "";
+        taskDoneInput.checked = task.is_done === 1;
     }
 });
-loadProjects();
+// Cargar al iniciar
+loadTasks();
 
-},{"axios":"kooH4","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["7wZbQ","2R06K"], "2R06K", "parcelRequire10c2", {})
+},{"axios":"kooH4","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["fR7TU","iAzNu"], "iAzNu", "parcelRequire10c2", {})
 
-//# sourceMappingURL=frontend.0f77c784.js.map
+//# sourceMappingURL=task.8b625fbd.js.map

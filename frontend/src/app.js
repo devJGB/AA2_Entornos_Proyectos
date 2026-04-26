@@ -31,6 +31,12 @@ async function loadProjects() {
                 <strong>${p.name}</strong> - ${p.description ?? ""}
               </div>
               <div class="btn-group">
+                <!-- Botón para ir a tareas del proyecto -->
+                <a class="btn-view-tasks" href="./task.html?project_id=${p.id}&name=${encodeURIComponent(
+                  p.name
+                )}">
+                  Tareas
+                </a>
                 <button data-id="${p.id}" class="btn-edit">Editar</button>
                 <button data-id="${p.id}" class="btn-delete">Eliminar</button>
               </div>

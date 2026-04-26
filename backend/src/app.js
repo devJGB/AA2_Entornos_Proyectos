@@ -41,6 +41,7 @@ app.post("/projects", async (req, res) => {
   await db("projects").insert({
     name,
     description,
+    
   });
 
   res.status(201).json({ message: "Proyecto creado" });
@@ -82,22 +83,23 @@ app.get("/tasks/:id", async (req, res) => {
 });
 
 app.post("/tasks", async (req, res) => {
-  const { project_id, title, done } = req.body;
+  const { project_id, title, description, is_done } = req.body;
 
   await db("tasks").insert({
     project_id,
     title,
-    done: done ?? 0,
+    description,
+    is_done: is_done ?? 0,
   });
 
   res.status(201).json({ message: "Tarea creada" });
 });
 
 app.put("/tasks/:id", async (req, res) => {
-  const { project_id, title, done } = req.body;
+  const { project_id, title, description, is_done } = req.body;
 
   await db("tasks")
-    .update({ project_id, title, done })
+    .update({ project_id, title, description, is_done })
     .where({ id: req.params.id });
 
   res.status(204).json({});
