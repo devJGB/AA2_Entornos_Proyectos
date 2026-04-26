@@ -57,6 +57,20 @@ h1 {
   background: #777;
 }
 
+.btn-view-tasks {
+  color: #fff;
+  background: #2ecc71;
+  padding: 8px 12px;
+  text-decoration: none;
+}
+
+.back-link {
+  color: #4a90e2;
+  margin-bottom: 12px;
+  text-decoration: none;
+  display: inline-block;
+}
+
 ul {
   padding: 0;
   list-style: none;
@@ -84,8 +98,48 @@ li .btn-group {
   display: flex;
 }
 
+#task-form {
+  background: #fff;
+  border-radius: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+  display: flex;
+  box-shadow: 0 2px 6px #00000014;
+}
+
+#task-form input {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  flex: 200px;
+  padding: 8px;
+}
+
+#task-form button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.btn-edit-task {
+  color: #fff;
+  background: #4a90e2;
+}
+
+.btn-delete-task {
+  color: #fff;
+  background: #e74c3c;
+}
+
+#cancel-task-edit {
+  color: #fff;
+  background: #777;
+}
+
 @media (width <= 600px) {
-  #project-form {
+  #project-form, #task-form {
     flex-direction: column;
   }
 

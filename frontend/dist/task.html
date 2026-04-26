@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="es"><head><script type="module" src="/frontend.8af6acd4.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas</title>
+    <link rel="stylesheet" href="/frontend.4d663569.css">
+</head>
+<body>
+    <!-- Volver a proyectos -->
+    <a class="back-link" href="/index.html">Volver a Proyectos</a>
+
+    <!-- Título dinámico -->
+    <h1 id="tasks-title">Tareas del Proyecto</h1>
+
+    <!-- Formulario tareas -->
+    <form id="task-form">
+        <input type="hidden" id="task-id">
+        <input type="text" id="task-title" placeholder="Título" required="">
+        <input type="text" id="task-description" placeholder="Descripción">
+        <label class="task-check">
+            <input type="checkbox" id="task-done">
+            Realizada
+        </label>
+        <button type="submit">Guardar</button>
+        <button type="button" id="cancel-task-edit">Cancelar</button>
+    </form>
+
+    <!-- Listado de tareas -->
+    <div id="tasks"></div>
+
+    <script src="/task.8b625fbd.js" type="module"></script>
+
+</body></html>
