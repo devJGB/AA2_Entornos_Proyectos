@@ -726,6 +726,27 @@ const idInput = document.getElementById("project-id");
 const nameInput = document.getElementById("project-name");
 const descInput = document.getElementById("project-description");
 const cancelBtn = document.getElementById("cancel-edit");
+const projectErrors = document.getElementById("project-errors");
+// Mostrar errores en pantalla
+function showProjectErrors(errors) {
+    if (!errors || errors.length === 0) {
+        projectErrors.innerHTML = "";
+        return;
+    }
+    projectErrors.innerHTML = `
+    <ul>
+      ${errors.map((e)=>`<li>${e}</li>`).join("")}
+    </ul>
+  `;
+}
+// Validar formulario de proyecto
+function validateProjectForm() {
+    const errors = [];
+    const name = nameInput.value.trim();
+    if (!name) errors.push("El nombre del proyecto es obligatorio.");
+    // Puedes añadir más reglas si quieres
+    return errors;
+}
 // Cargar proyectos
 async function loadProjects() {
     const res = await (0, _axiosDefault.default).get(`${API_URL}/projects`);
@@ -757,10 +778,16 @@ async function loadProjects() {
 // Crear o editar proyecto
 form.addEventListener("submit", async (e)=>{
     e.preventDefault();
+    const errors = validateProjectForm();
+    if (errors.length > 0) {
+        showProjectErrors(errors);
+        return;
+    }
+    showProjectErrors([]);
     const id = idInput.value;
     const payload = {
-        name: nameInput.value,
-        description: descInput.value
+        name: nameInput.value.trim(),
+        description: descInput.value.trim()
     };
     if (id) await (0, _axiosDefault.default).put(`${API_URL}/projects/${id}`, payload);
     else await (0, _axiosDefault.default).post(`${API_URL}/projects`, payload);
@@ -772,6 +799,7 @@ form.addEventListener("submit", async (e)=>{
 cancelBtn.addEventListener("click", ()=>{
     form.reset();
     idInput.value = "";
+    showProjectErrors([]);
 });
 // Editar o eliminar
 projectsDiv.addEventListener("click", async (e)=>{

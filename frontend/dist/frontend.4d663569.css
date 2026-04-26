@@ -138,6 +138,21 @@ li .btn-group {
   background: #777;
 }
 
+.form-errors {
+  color: #b91c1c;
+  background: #ffecec;
+  border: 1px solid #f5c2c2;
+  border-radius: 6px;
+  margin: 8px 0 16px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.form-errors ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
 @media (width <= 600px) {
   #project-form, #task-form {
     flex-direction: column;
