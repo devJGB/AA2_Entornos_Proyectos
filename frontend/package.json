@@ -1,0 +1,19 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "parcel src/index.html src/task.html --no-cache ",
+    "build": "parcel build src/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.15.0",
+    "parcel": "^2.16.4"
+  },
+  "devDependencies": {
+    "buffer": "^6.0.3"
+  }
+}
